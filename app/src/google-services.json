@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "90191837725",
+    "project_id": "toma-ai-5f3c0",
+    "storage_bucket": "toma-ai-5f3c0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90191837725:android:b16acc0f1303feef7c64f4",
+        "android_client_info": {
+          "package_name": "com.project.pos.tomaai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2pNTis9nPOjrlvhBPHjiZOdHWYxha9aA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -23,8 +23,9 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun SingInScreen(
     navController: NavHostController,
-    onSignUpClick: () -> Unit = {},
+    onSignUpClick: () -> Unit = {}
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -43,6 +44,7 @@ android {
 
 dependencies {
 //    implementation(project(":libraries:configs"))
+    implementation(project(":libraries:auth"))
     implementation(project(":libraries:design_system"))
     implementation(project(":libraries:navigation"))
     implementation(project(":features:onboarding"))
@@ -57,6 +59,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.material)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+//    implementation(libs.firebase.common.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
