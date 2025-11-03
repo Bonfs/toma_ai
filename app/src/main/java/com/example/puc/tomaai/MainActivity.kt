@@ -4,44 +4,52 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.puc.design_system.theme.TomaAiTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.puc.onboarding.signin.SingInScreen
+import com.example.puc.onboarding.signup.SignUpScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TomaAiTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            AppNavHost()
         }
     }
 }
-
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun AppNavHost(
+    navController: NavHostController = rememberNavController(),
+    startDestination: String = AppDestinations.SignIn.route,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+    ) {
+        composable(AppDestinations.SignIn.route) {
+            SingInScreen(
+                navController = navController,
+                onSignUpClick = {
+                    navController.navigate(AppDestinations.SignUp.route)
+                }
+            )
+        }
+
+        composable(AppDestinations.SignUp.route) {
+            SignUpScreen(
+                navController = navController,
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    TomaAiTheme {
-        Greeting("Android")
-    }
+    AppNavHost()
 }
