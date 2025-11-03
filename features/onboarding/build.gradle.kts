@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.puc.onboarding"
+    namespace = "com.project.pos.onboarding"
     compileSdk {
         version = release(36)
     }

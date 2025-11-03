@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.puc.tomaai"
+    namespace = "com.project.pos.tomaai"
     compileSdk {
         version = release(36)
     }

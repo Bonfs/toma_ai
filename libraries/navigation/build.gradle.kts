@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.puc.navigation"
+    namespace = "com.project.pos.navigation"
     compileSdk {
         version = release(36)
     }

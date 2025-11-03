@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.puc.design_system"
+    namespace = "com.project.pos.design_system"
     compileSdk {
         version = release(36)
     }
