@@ -1,4 +1,4 @@
-package com.example.puc.tomaai
+package com.example.puc.navigation
 
 sealed class AppDestinations(val route: String) {
     object SignIn : AppDestinations("signin")
