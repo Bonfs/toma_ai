@@ -11,7 +11,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.puc.tomaai"
+        applicationId = "com.project.pos.tomaai"
         minSdk = 33
         targetSdk = 36
         versionCode = 1
@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
