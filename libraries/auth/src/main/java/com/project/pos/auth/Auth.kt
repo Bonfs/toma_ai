@@ -7,5 +7,11 @@ interface Auth {
         onSuccess: () -> Unit,
     )
 
+    fun signInWithEmailAndPassword(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit,
+    )
+
     fun hasSession(): Boolean
 }

@@ -25,5 +25,22 @@ class FirebaseAuth() : Auth {
             }
     }
 
+    override fun signInWithEmailAndPassword(
+        email: String,
+        password: String,
+        onSuccess: () -> Unit
+    ) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    onSuccess()
+                } else {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+            }
+    }
+
     override fun hasSession(): Boolean = auth.currentUser != null
 }
