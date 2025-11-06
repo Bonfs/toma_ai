@@ -1,4 +1,4 @@
-package com.project.pos.onboarding.signup.components
+package com.project.pos.design_system.components.textfield
 
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions

@@ -43,7 +43,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.FirebaseAuth
-import com.project.pos.onboarding.signup.components.AuthTextField
+import com.project.pos.design_system.components.textfield.AuthTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
