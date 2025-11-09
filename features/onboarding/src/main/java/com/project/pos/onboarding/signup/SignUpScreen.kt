@@ -44,11 +44,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.FirebaseAuth
 import com.project.pos.design_system.components.textfield.AuthTextField
+import com.project.pos.navigation.DefaultNavigator
+import com.project.pos.navigation.Navigator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
-    navController: NavHostController,
+    navigator: Navigator,
     viewModel: SignUpViewModel = viewModel(factory = SignUpViewModelFactory(FirebaseAuth()))
 ) {
     val state by viewModel.state.collectAsState()
@@ -60,7 +62,7 @@ fun SignUpScreen(
             TopAppBar(
                 title = { Text("Toma ai!") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigateUp() }) {
+                    IconButton(onClick = { navigator.navigateBack() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -164,5 +166,6 @@ fun SignUpScreen(
 @Preview
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen(navController = rememberNavController())
+    val nav = DefaultNavigator(rememberNavController())
+    SignUpScreen(nav)
 }

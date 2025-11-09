@@ -36,16 +36,18 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.FirebaseAuth
 import com.project.pos.design_system.components.textfield.AuthTextField
+import com.project.pos.navigation.DefaultNavigator
+import com.project.pos.navigation.Navigator
 
 @Composable
 fun SingInScreen(
-    navController: NavHostController,
-    onSignUpClick: () -> Unit = {},
-    viewModel: SignInViewModel = viewModel(factory = SignInViewModelFactory(FirebaseAuth()))
+    navigator: Navigator,
+    viewModel: SignInViewModel = viewModel(
+        factory = SignInViewModelFactory(FirebaseAuth(), navigator),
+    )
 ) {
     val state by viewModel.state.collectAsState()
     val focusManager = LocalFocusManager.current
@@ -102,7 +104,7 @@ fun SingInScreen(
             ) {
                 Text("Não possui conta?")
                 TextButton(
-                    onClick = onSignUpClick,
+                    onClick = { navigator.moveToSignUp() },
                 ) {
                     Text("Crie aqui")
                 }
@@ -131,6 +133,6 @@ fun SingInScreen(
 @Preview
 @Composable
 fun SingInPreview() {
-    val navHost = rememberNavController()
-    SingInScreen(navHost)
+    val nav = DefaultNavigator(rememberNavController())
+    SingInScreen(nav)
 }

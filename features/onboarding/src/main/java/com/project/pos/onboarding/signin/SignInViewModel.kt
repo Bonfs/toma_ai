@@ -4,12 +4,16 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.pos.auth.Auth
+import com.project.pos.navigation.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SignInViewModel(private val auth: Auth) : ViewModel() {
+class SignInViewModel(
+    private val auth: Auth,
+    private val navigator: Navigator
+) : ViewModel() {
 
     private val _state = MutableStateFlow(SignInState())
     val state = _state.asStateFlow()
@@ -60,8 +64,8 @@ class SignInViewModel(private val auth: Auth) : ViewModel() {
                     email = state.value.email,
                     password = state.value.password,
                     onSuccess = {
-                        println("success")
                         _state.update { it.copy(isLoading = false, isSignedIn = true) }
+                        navigator.moveToHome()
                     }
                 )
             }

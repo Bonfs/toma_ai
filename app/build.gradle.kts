@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":libraries:auth"))
     implementation(project(":libraries:design_system"))
     implementation(project(":libraries:navigation"))
+    implementation(project(":features:home"))
     implementation(project(":features:onboarding"))
 
     implementation(libs.androidx.core.ktx)

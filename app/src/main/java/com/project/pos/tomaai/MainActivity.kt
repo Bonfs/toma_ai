@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,7 +14,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.Auth
 import com.project.pos.auth.FirebaseAuth
+import com.project.pos.home.ui.HomeScreen
 import com.project.pos.navigation.AppDestinations
+import com.project.pos.navigation.DefaultNavigator
+import com.project.pos.navigation.Navigator
 import com.project.pos.onboarding.signin.SingInScreen
 import com.project.pos.onboarding.signup.SignUpScreen
 
@@ -26,32 +30,40 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
             Log.d("MainActivity", "onCreate: ${auth.hasSession()}")
-            AppNavHost()
+            AppNavHost(
+                navController,
+                startDestination = if (auth.hasSession()) AppDestinations.Home.route else AppDestinations.SignIn.route
+            )
         }
     }
 }
+
 @Composable
 fun AppNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String = AppDestinations.SignIn.route
 ) {
+    val navigator: Navigator = remember { DefaultNavigator(navController) }
     NavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
         composable(AppDestinations.SignIn.route) {
             SingInScreen(
-                navController = navController,
-                onSignUpClick = {
-                    navController.navigate(AppDestinations.SignUp.route)
-                }
+                navigator,
             )
         }
 
         composable(AppDestinations.SignUp.route) {
             SignUpScreen(
-                navController = navController,
+                navigator,
+            )
+        }
+        composable(AppDestinations.Home.route) {
+            HomeScreen(
+                navigator,
             )
         }
     }
