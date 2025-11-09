@@ -5,4 +5,5 @@ interface Navigator {
     fun navigateBack()
     fun moveToSignIn()
     fun moveToHome()
+    fun moveToCreateMedicine()
 }

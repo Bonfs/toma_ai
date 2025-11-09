@@ -28,7 +28,7 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {}
+                onClick = { navigator.moveToCreateMedicine() }
             ) {
                 Text("+")
             }

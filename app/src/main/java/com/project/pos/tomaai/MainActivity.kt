@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.Auth
 import com.project.pos.auth.FirebaseAuth
+import com.project.pos.createmedicine.ui.CreateMedicineScreen
 import com.project.pos.home.ui.HomeScreen
 import com.project.pos.navigation.AppDestinations
 import com.project.pos.navigation.DefaultNavigator
@@ -63,6 +64,11 @@ fun AppNavHost(
         }
         composable(AppDestinations.Home.route) {
             HomeScreen(
+                navigator,
+            )
+        }
+        composable(AppDestinations.CreateMedicine.route) {
+            CreateMedicineScreen(
                 navigator,
             )
         }

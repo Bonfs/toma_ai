@@ -22,4 +22,8 @@ class DefaultNavigator(
             popUpTo(0)
         }
     }
+
+    override fun moveToCreateMedicine() {
+        navController.navigate(AppDestinations.CreateMedicine.route)
+    }
 }

@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":libraries:navigation"))
     implementation(project(":features:home"))
     implementation(project(":features:onboarding"))
+    implementation(project(":features:createmedicine"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
