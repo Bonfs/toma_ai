@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 class FirestoreMedicineRepository(
     private val auth: Auth,
 ) : MedicineRepository {
-    private val db = Firebase.firestore
+    private val db by lazy { Firebase.firestore }
 
     override fun addMedicine(medicine: Medicine) {
         db
