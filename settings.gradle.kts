@@ -47,5 +47,6 @@ fun includeProjects(directory: File, path: String, maxDepth: Int = 1) {
 //include(":libraries:auth")
 //include(":features:home")
 //include(":libraries:data")
+//include(":features:createmedicine")
 includeProjects(File(rootDir, "features"), ":features")
 includeProjects(File(rootDir, "libraries"), ":libraries")

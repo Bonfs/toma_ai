@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.project.pos.home"
+    namespace = "com.project.pos.createmedicine"
     compileSdk {
         version = release(36)
     }
