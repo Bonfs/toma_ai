@@ -14,4 +14,6 @@ interface Auth {
     )
 
     fun hasSession(): Boolean
+
+    fun token(): String?
 }
