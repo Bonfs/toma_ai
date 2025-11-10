@@ -24,6 +24,31 @@ class HomeScreenViewModel(
         getMedicines()
     }
 
+    fun onEvent(event: HomeEvent) {
+        when (event) {
+            is HomeEvent.DeleteMedicine -> {
+                _state.update { it.copy(showDeleteConfirmation = true, medicineIdToDelete = event.medicineId) }
+            }
+            HomeEvent.ConfirmDelete -> {
+                _state.value.medicineIdToDelete?.let { deleteMedicine(it) }
+                _state.update { it.copy(showDeleteConfirmation = false, medicineIdToDelete = null) }
+            }
+            HomeEvent.CancelDelete -> {
+                _state.update { it.copy(showDeleteConfirmation = false, medicineIdToDelete = null) }
+            }
+        }
+    }
+
+    private fun deleteMedicine(medicineId: String) {
+        viewModelScope.launch {
+            try {
+                medicineRepository.deleteMedicine(medicineId)
+            } catch (e: Exception) {
+                _state.update { it.copy(error = e.message) }
+            }
+        }
+    }
+
     private fun getMedicines() {
         viewModelScope.launch {
             medicineRepository.getMedicines()

@@ -5,19 +5,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.FirebaseAuth
@@ -61,18 +57,50 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
-        if (state.isLoading) {
-            Column(
+        when {
+            state.isLoading -> Column(
                 modifier = Modifier
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
 
-            ) {
+                ) {
                 CircularProgressIndicator()
             }
-        } else {
-            HomeScreenContent(paddingValues, state.medicines)
+            state.showDeleteConfirmation -> {
+                AlertDialog(
+                        title = {
+                            Text(text = "Apagar medicamento?")
+                        },
+                        text = {
+                            Text(text = "Tem certeza que deseja apagar esse medicamento?")
+                        },
+                        onDismissRequest = { viewModel.onEvent(HomeEvent.CancelDelete) },
+                        confirmButton = {
+                            TextButton(
+                                onClick = {
+                                    viewModel.onEvent(HomeEvent.ConfirmDelete)
+                                }
+                            ) {
+                                Text("Confirmar")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(
+                                onClick = { viewModel.onEvent(HomeEvent.CancelDelete) }
+                            ) {
+                                Text("Cancelar")
+                            }
+                        }
+                    )
+            }
+            else -> {
+                HomeScreenContent(
+                    paddingValues,
+                    viewModel,
+                    state.medicines
+                )
+            }
         }
     }
 }
@@ -80,6 +108,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenContent(
     paddingValues: PaddingValues,
+    viewModel: HomeScreenViewModel,
     medicines: List<Medicine>
 ) {
     LazyColumn(
@@ -89,7 +118,12 @@ private fun HomeScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         items(medicines) { medicine ->
-            MedicineItem(medicine)
+            MedicineItem(
+                medicine,
+                onDeleteClick = {
+                    viewModel.onEvent(HomeEvent.DeleteMedicine(medicine.id!!))
+                }
+            )
         }
     }
 }

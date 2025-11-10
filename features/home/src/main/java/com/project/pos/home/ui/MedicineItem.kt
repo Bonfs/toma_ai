@@ -63,7 +63,7 @@ fun MedicineItem(
                     )
                 }
                 IconButton(
-                    onClick = onDeleteClick
+                    onClick = { onDeleteClick() }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
