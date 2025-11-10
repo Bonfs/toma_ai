@@ -1,5 +1,6 @@
 package com.project.pos.data.impl.repository
 
+import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.snapshots
@@ -31,8 +32,32 @@ class FirestoreMedicineRepository(
             .snapshots()
             .map { snapshot ->
                 snapshot.documents.mapNotNull { document ->
-                    val medicine = document.toObject<Medicine>()
-                    medicine?.copy(id = document.id)
+                    try {
+                        val data = document.data
+                        val name = data?.get("name") as? String ?: ""
+                        val createdAt = data?.get("createdAt") as? Long ?: 0L
+                        val timeField = data?.get("time")
+
+                        val time = when (timeField) {
+                            is String -> timeField
+                            is Map<*, *> -> {
+                                val hour = timeField["hour"] as? Long ?: 0
+                                val minute = timeField["minute"] as? Long ?: 0
+                                "$hour:$minute"
+                            }
+                            else -> ""
+                        }
+
+                        Medicine(
+                            id = document.id,
+                            name = name,
+                            time = time,
+                            createdAt = createdAt
+                        )
+                    } catch (e: Exception) {
+                        // Log the error or handle it as needed
+                        null
+                    }
                 }
             }
     }

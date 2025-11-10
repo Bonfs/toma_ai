@@ -45,7 +45,7 @@ class CreateMedicineViewModel(
                 medicineRepository.addMedicine(
                     Medicine(
                         name = state.value.name,
-                        time = state.value.time,
+                        time = "${state.value.time.hour}:${state.value.time.minute}",
                         createdAt = System.currentTimeMillis()
                     )
                 )

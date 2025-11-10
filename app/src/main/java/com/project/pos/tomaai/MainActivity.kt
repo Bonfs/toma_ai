@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.Auth
 import com.project.pos.auth.FirebaseAuth
 import com.project.pos.createmedicine.ui.CreateMedicineScreen
+import com.project.pos.design_system.theme.TomaAiTheme
 import com.project.pos.home.ui.HomeScreen
 import com.project.pos.navigation.AppDestinations
 import com.project.pos.navigation.DefaultNavigator
@@ -33,10 +34,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             Log.d("MainActivity", "onCreate: ${auth.hasSession()}")
-            AppNavHost(
-                navController,
-                startDestination = if (auth.hasSession()) AppDestinations.Home.route else AppDestinations.SignIn.route
-            )
+            TomaAiTheme {
+                AppNavHost(
+                    navController,
+                    startDestination = if (auth.hasSession()) AppDestinations.Home.route else AppDestinations.SignIn.route
+                )
+            }
         }
     }
 }
