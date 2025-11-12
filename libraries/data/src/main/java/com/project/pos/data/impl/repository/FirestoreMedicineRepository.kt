@@ -10,18 +10,21 @@ import com.project.pos.data.api.models.Medicine
 import com.project.pos.data.api.repository.MedicineRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.tasks.await
 
 class FirestoreMedicineRepository(
     private val auth: Auth,
 ) : MedicineRepository {
     private val db by lazy { Firebase.firestore }
 
-    override fun addMedicine(medicine: Medicine) {
-        db
+    override suspend fun addMedicine(medicine: Medicine): String {
+        val documentReference = db
             .collection("users")
             .document(auth.token()!!)
             .collection("medicines")
             .add(medicine)
+            .await()
+        return documentReference.id
     }
 
     override fun getMedicines(): Flow<List<Medicine>> {
@@ -62,21 +65,23 @@ class FirestoreMedicineRepository(
             }
     }
 
-    override fun updateMedicine(medicine: Medicine) {
+    override suspend fun updateMedicine(medicine: Medicine) {
         db
             .collection("users")
             .document(auth.token()!!)
             .collection("medicines")
             .document(medicine.id!!)
             .set(medicine)
+            .await()
     }
 
-    override fun deleteMedicine(medicineId: String) {
+    override suspend fun deleteMedicine(medicineId: String) {
         db
             .collection("users")
             .document(auth.token()!!)
             .collection("medicines")
             .document(medicineId)
             .delete()
+            .await()
     }
 }

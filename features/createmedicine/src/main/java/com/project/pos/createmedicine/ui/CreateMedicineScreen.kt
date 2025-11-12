@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.FirebaseAuth
+import com.project.pos.createmedicine.alarm.AlarmScheduler
 import com.project.pos.data.impl.repository.FirestoreMedicineRepository
 import com.project.pos.navigation.DefaultNavigator
 import com.project.pos.navigation.Navigator
@@ -38,10 +39,12 @@ import java.time.LocalTime
 @Composable
 fun CreateMedicineScreen(
     navigator: Navigator,
+    alarmScheduler: AlarmScheduler,
     viewModel: CreateMedicineViewModel = viewModel(
         factory = CreateMedicineViewModelFactory(
             FirestoreMedicineRepository(FirebaseAuth()),
-            navigator
+            navigator,
+            alarmScheduler
         )
     )
 ) {
@@ -116,5 +119,5 @@ fun CreateMedicineScreen(
 @Composable
 fun CreateMedicineScreenPreview() {
     val navigator = DefaultNavigator(rememberNavController())
-    CreateMedicineScreen(navigator)
+//    CreateMedicineScreen(navigator)
 }

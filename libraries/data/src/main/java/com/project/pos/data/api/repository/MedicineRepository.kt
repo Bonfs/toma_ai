@@ -4,8 +4,8 @@ import com.project.pos.data.api.models.Medicine
 import kotlinx.coroutines.flow.Flow
 
 interface MedicineRepository {
-    fun addMedicine(medicine: Medicine)
+    suspend fun addMedicine(medicine: Medicine): String
     fun getMedicines(): Flow<List<Medicine>>
-    fun updateMedicine(medicine: Medicine)
-    fun deleteMedicine(medicineId: String)
+    suspend fun updateMedicine(medicine: Medicine)
+    suspend fun deleteMedicine(medicineId: String)
 }

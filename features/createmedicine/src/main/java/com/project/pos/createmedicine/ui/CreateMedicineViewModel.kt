@@ -2,6 +2,8 @@ package com.project.pos.createmedicine.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.pos.createmedicine.alarm.AlarmItem
+import com.project.pos.createmedicine.alarm.AlarmScheduler
 import com.project.pos.data.api.models.Medicine
 import com.project.pos.data.api.repository.MedicineRepository
 import com.project.pos.navigation.Navigator
@@ -13,7 +15,8 @@ import java.time.LocalTime
 
 class CreateMedicineViewModel(
     private val medicineRepository: MedicineRepository,
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val alarmScheduler: AlarmScheduler
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CreateMedicineState())
@@ -42,11 +45,18 @@ class CreateMedicineViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
             try {
-                medicineRepository.addMedicine(
+                val medicineId = medicineRepository.addMedicine(
                     Medicine(
                         name = state.value.name,
                         time = "${state.value.time.hour}:${state.value.time.minute}",
                         createdAt = System.currentTimeMillis()
+                    )
+                )
+                alarmScheduler.schedule(
+                    AlarmItem(
+                        id = medicineId.hashCode(),
+                        time = state.value.time,
+                        message = "Hora de tomar o seu remédio: ${state.value.name}"
                     )
                 )
                 _state.update { it.copy(isLoading = false, isMedicineCreated = true) }
