@@ -17,7 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.Auth
 import com.project.pos.auth.FirebaseAuth
-import com.project.pos.createmedicine.alarm.AlarmScheduler
+import com.project.pos.createmedicine.alarm.AlarmReceiver
 import com.project.pos.createmedicine.ui.CreateMedicineScreen
 import com.project.pos.design_system.theme.TomaAiTheme
 import com.project.pos.home.ui.HomeScreen
@@ -26,8 +26,6 @@ import com.project.pos.navigation.DefaultNavigator
 import com.project.pos.navigation.Navigator
 import com.project.pos.onboarding.signin.SingInScreen
 import com.project.pos.onboarding.signup.SignUpScreen
-import com.project.pos.tomaai.alarm.AlarmReceiver
-import com.project.pos.tomaai.alarm.AndroidAlarmScheduler
 
 class MainActivity : ComponentActivity() {
     private val auth: Auth by lazy {
@@ -44,8 +42,7 @@ class MainActivity : ComponentActivity() {
             TomaAiTheme {
                 AppNavHost(
                     navController,
-                    startDestination = if (auth.hasSession()) AppDestinations.Home.route else AppDestinations.SignIn.route,
-                    scheduler = AndroidAlarmScheduler(this)
+                    startDestination = if (auth.hasSession()) AppDestinations.Home.route else AppDestinations.SignIn.route
                 )
             }
         }
@@ -71,7 +68,6 @@ class MainActivity : ComponentActivity() {
 fun AppNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String = AppDestinations.SignIn.route,
-    scheduler: AlarmScheduler,
 ) {
     val navigator: Navigator = remember { DefaultNavigator(navController) }
     NavHost(
@@ -96,15 +92,14 @@ fun AppNavHost(
         }
         composable(AppDestinations.CreateMedicine.route) {
             CreateMedicineScreen(
-                navigator,
-                scheduler
+                navigator
             )
         }
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun GreetingPreview() {
-//    AppNavHost()
-//}
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    AppNavHost()
+}

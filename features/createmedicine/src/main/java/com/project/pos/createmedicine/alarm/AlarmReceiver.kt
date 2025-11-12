@@ -1,4 +1,4 @@
-package com.project.pos.tomaai.alarm
+package com.project.pos.createmedicine.alarm
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import com.project.pos.tomaai.R
+import com.project.pos.createmedicine.R
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -21,5 +21,6 @@ class AlarmReceiver : BroadcastReceiver() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         notificationManager.notify(id, builder.build())
+//        Toast.makeText(context, "Alarm triggered!", Toast.LENGTH_SHORT).show()
     }
 }
