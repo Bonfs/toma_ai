@@ -12,9 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.project.pos.auth.Auth
 import com.project.pos.auth.FirebaseAuth
 import com.project.pos.createmedicine.alarm.AlarmReceiver
@@ -26,6 +28,7 @@ import com.project.pos.navigation.DefaultNavigator
 import com.project.pos.navigation.Navigator
 import com.project.pos.onboarding.signin.SingInScreen
 import com.project.pos.onboarding.signup.SignUpScreen
+import com.project.pos.updatemedicine.ui.UpdateMedicineScreen
 
 class MainActivity : ComponentActivity() {
     private val auth: Auth by lazy {
@@ -92,6 +95,16 @@ fun AppNavHost(
         }
         composable(AppDestinations.CreateMedicine.route) {
             CreateMedicineScreen(
+                navigator
+            )
+        }
+        composable(
+            "${AppDestinations.UpdateMedicine.route}/{medicineId}",
+            arguments = listOf(navArgument("medicineId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val medicineId = backStackEntry.arguments?.getString("medicineId")
+            UpdateMedicineScreen(
+                medicineId,
                 navigator
             )
         }

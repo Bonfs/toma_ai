@@ -101,6 +101,7 @@ fun HomeScreen(
                 HomeScreenContent(
                     paddingValues,
                     viewModel,
+                    navigator,
                     state.medicines
                 )
             }
@@ -112,6 +113,7 @@ fun HomeScreen(
 private fun HomeScreenContent(
     paddingValues: PaddingValues,
     viewModel: HomeScreenViewModel,
+    navigator: Navigator,
     medicines: List<Medicine>
 ) {
     LazyColumn(
@@ -125,6 +127,9 @@ private fun HomeScreenContent(
                 medicine,
                 onDeleteClick = {
                     viewModel.onEvent(HomeEvent.DeleteMedicine(medicine.id!!))
+                },
+                onEditClick = {
+                    navigator.moveToUpdateMedicine(medicine.id!!)
                 }
             )
         }

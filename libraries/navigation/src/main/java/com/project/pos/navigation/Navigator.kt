@@ -6,4 +6,5 @@ interface Navigator {
     fun moveToSignIn()
     fun moveToHome()
     fun moveToCreateMedicine()
+    fun moveToUpdateMedicine(medicineId: String)
 }

@@ -26,4 +26,8 @@ class DefaultNavigator(
     override fun moveToCreateMedicine() {
         navController.navigate(AppDestinations.CreateMedicine.route)
     }
+
+    override fun moveToUpdateMedicine(medicineId: String) {
+        navController.navigate("${AppDestinations.UpdateMedicine.route}/$medicineId")
+    }
 }

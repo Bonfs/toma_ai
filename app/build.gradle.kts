@@ -50,6 +50,7 @@ dependencies {
     implementation(project(":features:home"))
     implementation(project(":features:onboarding"))
     implementation(project(":features:createmedicine"))
+    implementation(project(":features:updatemedicine"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
