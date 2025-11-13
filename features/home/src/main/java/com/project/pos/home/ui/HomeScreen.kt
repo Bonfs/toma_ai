@@ -21,10 +21,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.project.pos.auth.FirebaseAuth
+import com.project.pos.createmedicine.alarm.AndroidAlarmScheduler
 import com.project.pos.data.api.models.Medicine
 import com.project.pos.data.impl.repository.FirestoreMedicineRepository
 import com.project.pos.navigation.DefaultNavigator
@@ -37,7 +39,8 @@ fun HomeScreen(
     viewModel: HomeScreenViewModel = viewModel(
         factory = HomeScreenViewModelFactory(
             FirestoreMedicineRepository(FirebaseAuth()),
-            navigator
+            navigator,
+            AndroidAlarmScheduler(LocalContext.current.applicationContext)
         )
     )
 ) {

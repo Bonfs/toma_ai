@@ -3,6 +3,7 @@ package com.project.pos.home.ui
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.pos.createmedicine.alarm.AlarmScheduler
 import com.project.pos.data.api.repository.MedicineRepository
 import com.project.pos.navigation.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
     private val medicineRepository: MedicineRepository,
-    private val navigator: Navigator
+    private val navigator: Navigator,
+    private val alarmScheduler: AlarmScheduler
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -43,6 +45,7 @@ class HomeScreenViewModel(
         viewModelScope.launch {
             try {
                 medicineRepository.deleteMedicine(medicineId)
+                alarmScheduler.cancel(medicineId.hashCode())
             } catch (e: Exception) {
                 _state.update { it.copy(error = e.message) }
             }
