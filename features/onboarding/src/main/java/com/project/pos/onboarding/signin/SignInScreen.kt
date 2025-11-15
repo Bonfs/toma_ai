@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -56,11 +57,15 @@ fun SingInScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.White),
+            .background(color = MaterialTheme.colorScheme.surfaceVariant),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        Text("Toma ai!")
+        Text(
+            "Toma ai!",
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -102,7 +107,10 @@ fun SingInScreen(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Não possui conta?")
+                Text(
+                    "Não possui conta?",
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 TextButton(
                     onClick = { navigator.moveToSignUp() },
                 ) {

@@ -42,6 +42,8 @@ class FirebaseAuth() : Auth {
             }
     }
 
+    override fun signOut() = auth.signOut()
+
     override fun hasSession(): Boolean = auth.currentUser != null
 
     override fun token(): String? = auth.currentUser?.uid

@@ -13,6 +13,8 @@ interface Auth {
         onSuccess: () -> Unit,
     )
 
+    fun signOut()
+
     fun hasSession(): Boolean
 
     fun token(): String?
