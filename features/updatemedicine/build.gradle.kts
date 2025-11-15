@@ -39,6 +39,9 @@ android {
 
 dependencies {
     implementation(project(":libraries:navigation"))
+    implementation(project(":features:createmedicine"))
+    implementation(project(":libraries:data"))
+    implementation(project(":libraries:auth"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
