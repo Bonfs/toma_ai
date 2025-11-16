@@ -1,13 +1,13 @@
 # Informações Gerais
 
-O Toma ai! é uma aplicação simples que tem como objetivo ajudar os usuários a se lembrarem de tomar o seu medicamento.
+O Toma ai! é uma aplicação simples que tem como objetivo ajudar os usuários a se lembrarem de tomar os seus medicamentos.
 
 ## Estrutura do Repositório
 
 O projeto é dividido nos seguintes módulos e submódulos.
 
 ```kotlin
-├── app/                            # Documentação
+├── app/                            # Aplicação
 ├── features/                       # Contém as principais features do aplicativo
 ├────── features/createmedicine     # Contém a tela de cadstro de medicamentos
 ├────── features/home               # Tela inicial do aplicativo após logar, exibe os medicamentos
@@ -42,4 +42,4 @@ Ter o Android Studio (AS) e Java configurado na máquina.
 * Abrir o projeto com o Android Studio
 * Se certificar que a versão do JDK utilizada pelo Android Studio é a 11
 * Esperar o AS sincronizar
-* Rodar o projeto (^R)
+* Rodar o projeto (^R ou shift+f10)
