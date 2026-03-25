@@ -46,6 +46,7 @@ dependencies {
 //    implementation(project(":libraries:configs"))
     implementation(project(":libraries:auth"))
     implementation(project(":libraries:design_system"))
+    implementation(project(":libraries:di"))
     implementation(project(":libraries:navigation"))
     implementation(project(":features:home"))
     implementation(project(":features:onboarding"))
@@ -64,7 +65,10 @@ dependencies {
     implementation(libs.material)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
-//    implementation(libs.firebase.common.ktx)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/libraries/auth" />
             <option value="$PROJECT_DIR$/libraries/data" />
             <option value="$PROJECT_DIR$/libraries/design_system" />
+            <option value="$PROJECT_DIR$/libraries/di" />
             <option value="$PROJECT_DIR$/libraries/navigation" />
           </set>
         </option>
