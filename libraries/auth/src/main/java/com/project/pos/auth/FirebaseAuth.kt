@@ -2,11 +2,11 @@ package com.project.pos.auth
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.auth.FirebaseAuth as FirebaseSDKAuth
 
-class FirebaseAuth : Auth {
-    private val auth by lazy {
-        Firebase.auth
-    }
+class FirebaseAuth(
+    private val auth: FirebaseSDKAuth = Firebase.auth
+) : Auth {
 
     override fun createNewAccountWithEmailAndPassword(
         email: String,
