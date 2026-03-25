@@ -37,7 +37,7 @@ val viewModelModule = module {
     viewModel { (navigator: Navigator) -> SignInViewModel(get(), navigator) }
     viewModel { SignUpViewModel(get()) }
     viewModel { (navigator: Navigator) -> CreateMedicineViewModel(get(), navigator, get()) }
-    viewModel { (navigator: Navigator) -> HomeScreenViewModel(get(), navigator, get()) }
+    viewModel { (navigator: Navigator) -> HomeScreenViewModel(get(), navigator, get(), get()) }
     viewModel { (medicineId: String, navigator: Navigator) ->
         UpdateMedicineViewModel(medicineId, get(), navigator, get())
     }

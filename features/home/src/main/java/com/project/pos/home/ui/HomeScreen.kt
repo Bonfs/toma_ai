@@ -45,12 +45,13 @@ import com.project.pos.navigation.DefaultNavigator
 import com.project.pos.navigation.Navigator
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navigator: Navigator,
-    viewModel: HomeScreenViewModel = koinViewModel()
+    viewModel: HomeScreenViewModel = koinViewModel { parametersOf(navigator) }
 ) {
     val state by viewModel.state.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)

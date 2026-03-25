@@ -4,9 +4,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.FirebaseAuth as FirebaseSDKAuth
 
-class FirebaseAuth(
+class FirebaseAuth() : Auth {
     private val auth: FirebaseSDKAuth = Firebase.auth
-) : Auth {
 
     override fun createNewAccountWithEmailAndPassword(
         email: String,

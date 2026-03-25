@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.pos.auth.Auth
-import com.project.pos.auth.FirebaseAuth
 import com.project.pos.createmedicine.alarm.AlarmScheduler
 import com.project.pos.data.api.repository.MedicineRepository
 import com.project.pos.navigation.Navigator
@@ -18,12 +17,12 @@ import kotlinx.coroutines.launch
 class HomeScreenViewModel(
     private val medicineRepository: MedicineRepository,
     private val navigator: Navigator,
-    private val alarmScheduler: AlarmScheduler
+    private val alarmScheduler: AlarmScheduler,
+    private val auth: Auth
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
     val state = _state.asStateFlow()
-    private val auth: Auth = FirebaseAuth()
 
     init {
         getMedicines()
