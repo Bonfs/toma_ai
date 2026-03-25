@@ -19,7 +19,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,20 +26,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
-import com.project.pos.auth.FirebaseAuth
-import com.project.pos.createmedicine.alarm.AndroidAlarmScheduler
-import com.project.pos.data.impl.repository.FirestoreMedicineRepository
-import com.project.pos.navigation.DefaultNavigator
 import com.project.pos.navigation.Navigator
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateMedicineScreen(
     medicineId: String?,
-    navigator: Navigator
+    navigator: Navigator,
+    viewModel: UpdateMedicineViewModel = koinViewModel { parametersOf(medicineId, navigator) }
 ) {
     if (medicineId == null) {
         // Handle error case where medicineId is null
@@ -48,28 +44,28 @@ fun UpdateMedicineScreen(
         return
     }
 
-    val viewModel: UpdateMedicineViewModel = viewModel(
-        factory = UpdateMedicineViewModelFactory(
-            medicineId = medicineId,
-            medicineRepository = FirestoreMedicineRepository(FirebaseAuth()),
-            navigator = navigator,
-            alarmScheduler = AndroidAlarmScheduler(LocalContext.current.applicationContext)
-        )
-    )
-
     val state by viewModel.state.collectAsState()
-    val context = LocalContext.current
 
-    LaunchedEffect(state.navigateBack) {
-        if (state.navigateBack) {
-            navigator.navigateBack()
-        }
-    }
+    UpdateMedicineScreenContent(
+        state = state,
+        onEvent = { viewModel.onEvent(it) },
+        onBackClick = { navigator.navigateBack() }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun UpdateMedicineScreenContent(
+    state: UpdateMedicineState,
+    onEvent: (UpdateMedicineEvent) -> Unit,
+    onBackClick: () -> Unit
+) {
+    val context = LocalContext.current
 
     val timePickerDialog = TimePickerDialog(
         context,
         { _, hourOfDay, minute ->
-            viewModel.onEvent(UpdateMedicineEvent.OnTimeChanged(LocalTime.of(hourOfDay, minute)))
+            onEvent(UpdateMedicineEvent.OnTimeChanged(LocalTime.of(hourOfDay, minute)))
         },
         state.time.hour,
         state.time.minute,
@@ -81,7 +77,7 @@ fun UpdateMedicineScreen(
             TopAppBar(
                 title = { Text("Editar medicamento") },
                 navigationIcon = {
-                    IconButton(onClick = { navigator.navigateBack() }) {
+                    IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -103,7 +99,7 @@ fun UpdateMedicineScreen(
             } else {
                 OutlinedTextField(
                     value = state.name,
-                    onValueChange = { viewModel.onEvent(UpdateMedicineEvent.OnNameChanged(it)) },
+                    onValueChange = { onEvent(UpdateMedicineEvent.OnNameChanged(it)) },
                     label = { Text("Nome do remédio") },
                     modifier = Modifier.fillMaxWidth(),
                     isError = state.error != null,
@@ -123,7 +119,7 @@ fun UpdateMedicineScreen(
                     CircularProgressIndicator()
                 } else {
                     Button(
-                        onClick = { viewModel.onEvent(UpdateMedicineEvent.OnUpdateMedicineClicked) },
+                        onClick = { onEvent(UpdateMedicineEvent.OnUpdateMedicineClicked) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Salvar Alterações")
@@ -137,9 +133,12 @@ fun UpdateMedicineScreen(
 @Preview
 @Composable
 fun UpdateMedicineScreenPreview() {
-    val navigator = DefaultNavigator(rememberNavController())
-    UpdateMedicineScreen(
-        "medicineId",
-        navigator
+    UpdateMedicineScreenContent(
+        state = UpdateMedicineState(
+            name = "Paracetamol",
+            time = LocalTime.of(10, 0)
+        ),
+        onEvent = {},
+        onBackClick = {}
     )
 }
