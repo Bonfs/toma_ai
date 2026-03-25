@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
 class FirestoreMedicineRepository(
-    private val auth: Auth
+    private val auth: Auth,
+    private val db: FirebaseFirestore
 ) : MedicineRepository {
-    private val db: FirebaseFirestore = Firebase.firestore
 
     override suspend fun addMedicine(medicine: Medicine): String {
         val documentReference = db

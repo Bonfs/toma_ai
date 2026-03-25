@@ -1,6 +1,8 @@
 package com.example.puc.di
 
 import androidx.navigation.NavHostController
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import com.project.pos.auth.Auth
 import com.project.pos.auth.FirebaseAuth
 import com.projeto.pos.alarm_scheduler.AlarmScheduler
@@ -23,7 +25,8 @@ val authModule = module {
 }
 
 val dataModule = module {
-    single<MedicineRepository> { FirestoreMedicineRepository(get()) }
+    single { Firebase.firestore }
+    single<MedicineRepository> { FirestoreMedicineRepository(get(), get()) }
     single<AlarmScheduler> { AndroidAlarmScheduler(androidContext()) }
 }
 
