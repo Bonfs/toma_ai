@@ -37,30 +37,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.project.pos.auth.FirebaseAuth
-import com.project.pos.createmedicine.alarm.AndroidAlarmScheduler
 import com.project.pos.data.api.models.Medicine
-import com.project.pos.data.impl.repository.FirestoreMedicineRepository
 import com.project.pos.navigation.DefaultNavigator
 import com.project.pos.navigation.Navigator
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navigator: Navigator,
-    viewModel: HomeScreenViewModel = viewModel(
-        factory = HomeScreenViewModelFactory(
-            FirestoreMedicineRepository(FirebaseAuth()),
-            navigator,
-            AndroidAlarmScheduler(LocalContext.current.applicationContext)
-        )
-    )
+    viewModel: HomeScreenViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -69,23 +59,7 @@ fun HomeScreen(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
-                Column(
-                    modifier = Modifier.run {
-                        padding(horizontal = 16.dp).verticalScroll(rememberScrollState())
-                    }
-                ) {
-                    Spacer(Modifier.height(12.dp))
-                    Text("Perfil")
-                    HorizontalDivider()
-
-                    NavigationDrawerItem(
-                        label = { Text("Sair") },
-                        selected = false,
-                        onClick = { viewModel.onEvent(HomeEvent.SignOut) }
-                    )
-                }
-            }
+            DrawerContent(viewModel::onEvent)
         }
     ) {
         Scaffold(
@@ -122,51 +96,78 @@ fun HomeScreen(
 
         ) { paddingValues ->
             when {
-                state.isLoading -> Column(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-
-                    ) {
-                    CircularProgressIndicator()
-                }
-                state.showDeleteConfirmation -> {
-                    AlertDialog(
-                        title = {
-                            Text(text = "Apagar medicamento?")
-                        },
-                        text = {
-                            Text(text = "Tem certeza que deseja apagar esse medicamento?")
-                        },
-                        onDismissRequest = { viewModel.onEvent(HomeEvent.CancelDelete) },
-                        confirmButton = {
-                            TextButton(
-                                onClick = {
-                                    viewModel.onEvent(HomeEvent.ConfirmDelete)
-                                }
-                            ) {
-                                Text("Confirmar")
-                            }
-                        },
-                        dismissButton = {
-                            TextButton(
-                                onClick = { viewModel.onEvent(HomeEvent.CancelDelete) }
-                            ) {
-                                Text("Cancelar")
-                            }
-                        }
-                    )
-                }
-                else -> {
-                    HomeScreenContent(
-                        paddingValues,
-                        viewModel,
-                        navigator,
-                        state.medicines
-                    )
-                }
+                state.isLoading -> LoadingMedicinesContent()
+                state.showDeleteConfirmation -> DeleteMedicineDialog(viewModel::onEvent)
+                else -> HomeScreenContent(
+                    paddingValues,
+                    viewModel::onEvent,
+                    navigator,
+                    state.medicines
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun DeleteMedicineDialog(onEvent: (HomeEvent) -> Unit) {
+    AlertDialog(
+        title = {
+            Text(text = "Apagar medicamento?")
+        },
+        text = {
+            Text(text = "Tem certeza que deseja apagar esse medicamento?")
+        },
+        onDismissRequest = { onEvent(HomeEvent.CancelDelete) },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onEvent(HomeEvent.ConfirmDelete)
+                }
+            ) {
+                Text("Confirmar")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = { onEvent(HomeEvent.CancelDelete) }
+            ) {
+                Text("Cancelar")
+            }
+        }
+    )
+}
+
+@Composable
+private fun LoadingMedicinesContent() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+        ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun DrawerContent(onEvent: (HomeEvent) -> Unit) {
+    ModalDrawerSheet {
+        Column(
+            modifier = Modifier.run {
+                padding(horizontal = 16.dp).verticalScroll(rememberScrollState())
+            }
+        ) {
+            Spacer(Modifier.height(12.dp))
+            Text("Perfil")
+            HorizontalDivider()
+
+            NavigationDrawerItem(
+                label = { Text("Sair") },
+                selected = false,
+                onClick = { onEvent(HomeEvent.SignOut) }
+            )
         }
     }
 }
@@ -174,13 +175,15 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenContent(
     paddingValues: PaddingValues,
-    viewModel: HomeScreenViewModel,
+    onEvent: (HomeEvent) -> Unit,
     navigator: Navigator,
     medicines: List<Medicine>
 ) {
     if (medicines.isEmpty()) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(paddingValues),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -200,7 +203,7 @@ private fun HomeScreenContent(
                 MedicineItem(
                     medicine,
                     onDeleteClick = {
-                        viewModel.onEvent(HomeEvent.DeleteMedicine(medicine.id!!))
+                        onEvent(HomeEvent.DeleteMedicine(medicine.id!!))
                     },
                     onEditClick = {
                         navigator.moveToUpdateMedicine(medicine.id!!)
@@ -213,8 +216,47 @@ private fun HomeScreenContent(
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun HomeScreenPreview() {
+fun HomeScreenWithEmptyMedicinePreview() {
     val navigator = DefaultNavigator(rememberNavController())
-    HomeScreen(navigator)
+    Scaffold { paddingValues ->
+        HomeScreenContent(
+            paddingValues = paddingValues,
+            onEvent = {},
+            navigator = navigator,
+            medicines = listOf()
+        )
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun HomeScreenWithPreview() {
+    val navigator = DefaultNavigator(rememberNavController())
+    Scaffold { paddingValues ->
+        HomeScreenContent(
+            paddingValues = paddingValues,
+            onEvent = {},
+            navigator = navigator,
+            medicines = listOf(
+                Medicine(
+                    id = "1",
+                    name = "Medicamento 1",
+                    time = "12:00",
+                )
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DeleteMedicineDialogPreview() {
+    DeleteMedicineDialog(onEvent = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoadingMedicinesContentPreview() {
+    LoadingMedicinesContent()
 }
 
