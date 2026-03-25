@@ -26,34 +26,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
-import com.project.pos.auth.FirebaseAuth
-import com.project.pos.createmedicine.alarm.AndroidAlarmScheduler
-import com.project.pos.data.impl.repository.FirestoreMedicineRepository
-import com.project.pos.navigation.DefaultNavigator
 import com.project.pos.navigation.Navigator
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalTime
+import org.koin.core.parameter.parametersOf
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateMedicineScreen(
     navigator: Navigator,
-    viewModel: CreateMedicineViewModel = viewModel(
-        factory = CreateMedicineViewModelFactory(
-            FirestoreMedicineRepository(FirebaseAuth()),
-            navigator,
-            AndroidAlarmScheduler(LocalContext.current.applicationContext)
-        )
-    )
+    viewModel: CreateMedicineViewModel = koinViewModel { parametersOf(navigator) }
 ) {
     val state by viewModel.state.collectAsState()
+
+    CreateMedicineScreenContent(
+        state = state,
+        onEvent = viewModel::onEvent,
+        onBackClick = { navigator.navigateBack() }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CreateMedicineScreenContent(
+    state: CreateMedicineState,
+    onEvent: (CreateMedicineEvent) -> Unit,
+    onBackClick: () -> Unit
+) {
     val context = LocalContext.current
 
     val timePickerDialog = TimePickerDialog(
         context,
         { _, hourOfDay, minute ->
-            viewModel.onEvent(CreateMedicineEvent.TimeChanged(LocalTime.of(hourOfDay, minute)))
+            onEvent(CreateMedicineEvent.TimeChanged(LocalTime.of(hourOfDay, minute)))
         },
         state.time.hour,
         state.time.minute,
@@ -65,7 +69,7 @@ fun CreateMedicineScreen(
             TopAppBar(
                 title = { Text("Adicionar medicamento") },
                 navigationIcon = {
-                    IconButton(onClick = { navigator.navigateBack() }) {
+                    IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Back"
@@ -84,7 +88,7 @@ fun CreateMedicineScreen(
         ) {
             OutlinedTextField(
                 value = state.name,
-                onValueChange = { viewModel.onEvent(CreateMedicineEvent.NameChanged(it)) },
+                onValueChange = { onEvent(CreateMedicineEvent.NameChanged(it)) },
                 label = { Text("Nome do remédio") },
                 modifier = Modifier.fillMaxWidth(),
                 isError = state.error != null,
@@ -104,7 +108,7 @@ fun CreateMedicineScreen(
                 CircularProgressIndicator()
             } else {
                 Button(
-                    onClick = { viewModel.onEvent(CreateMedicineEvent.SaveClicked) },
+                    onClick = { onEvent(CreateMedicineEvent.SaveClicked) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Salvar")
@@ -117,6 +121,12 @@ fun CreateMedicineScreen(
 @Preview
 @Composable
 fun CreateMedicineScreenPreview() {
-    val navigator = DefaultNavigator(rememberNavController())
-    CreateMedicineScreen(navigator)
+    CreateMedicineScreenContent(
+        state = CreateMedicineState(
+            name = "Paracetamol",
+            time = LocalTime.of(12, 0)
+        ),
+        onEvent = {},
+        onBackClick = {}
+    )
 }
