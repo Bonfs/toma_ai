@@ -3,8 +3,8 @@ package com.example.puc.di
 import androidx.navigation.NavHostController
 import com.project.pos.auth.Auth
 import com.project.pos.auth.FirebaseAuth
-import com.project.pos.createmedicine.alarm.AlarmScheduler
-import com.project.pos.createmedicine.alarm.AndroidAlarmScheduler
+import com.projeto.pos.alarm_scheduler.AlarmScheduler
+import com.projeto.pos.alarm_scheduler.AndroidAlarmScheduler
 import com.project.pos.createmedicine.ui.CreateMedicineViewModel
 import com.project.pos.data.api.repository.MedicineRepository
 import com.project.pos.data.impl.repository.FirestoreMedicineRepository

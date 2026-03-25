@@ -39,10 +39,10 @@ android {
 
 dependencies {
     implementation(project(":libraries:auth"))
+    implementation(project(":libraries:alarm_scheduler"))
     implementation(project(":libraries:data"))
     implementation(project(":libraries:design_system"))
     implementation(project(":libraries:navigation"))
-    implementation(project(":features:createmedicine"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

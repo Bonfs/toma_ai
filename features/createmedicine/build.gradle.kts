@@ -40,6 +40,7 @@ android {
 dependencies {
     implementation(project(":libraries:auth"))
     implementation(project(":libraries:data"))
+    implementation(project(":libraries:alarm_scheduler"))
     implementation(project(":libraries:design_system"))
     implementation(project(":libraries:navigation"))
 

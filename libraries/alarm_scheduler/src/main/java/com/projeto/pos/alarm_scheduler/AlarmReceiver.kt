@@ -1,12 +1,10 @@
-package com.project.pos.createmedicine.alarm
+package com.projeto.pos.alarm_scheduler
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import com.project.pos.createmedicine.R
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -15,12 +13,11 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(context, "medicine_channel")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle("Hora do remédio!")
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         notificationManager.notify(id, builder.build())
-//        Toast.makeText(context, "Alarm triggered!", Toast.LENGTH_SHORT).show()
     }
 }

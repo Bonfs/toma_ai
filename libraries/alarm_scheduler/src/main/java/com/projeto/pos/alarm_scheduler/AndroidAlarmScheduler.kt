@@ -1,4 +1,4 @@
-package com.project.pos.createmedicine.alarm
+package com.projeto.pos.alarm_scheduler
 
 import android.app.AlarmManager
 import android.app.PendingIntent

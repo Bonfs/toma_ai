@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.pos.auth.Auth
-import com.project.pos.createmedicine.alarm.AlarmScheduler
+import com.projeto.pos.alarm_scheduler.AlarmScheduler
 import com.project.pos.data.api.repository.MedicineRepository
 import com.project.pos.navigation.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -32,6 +32,7 @@ dependencies {
     implementation(project(":libraries:auth"))
     implementation(project(":libraries:data"))
     implementation(project(":libraries:navigation"))
+    implementation(project(":libraries:alarm_scheduler"))
     implementation(project(":features:home"))
     implementation(project(":features:onboarding"))
     implementation(project(":features:createmedicine"))

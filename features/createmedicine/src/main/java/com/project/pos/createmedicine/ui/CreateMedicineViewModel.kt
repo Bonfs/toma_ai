@@ -2,8 +2,8 @@ package com.project.pos.createmedicine.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.pos.createmedicine.alarm.AlarmItem
-import com.project.pos.createmedicine.alarm.AlarmScheduler
+import com.projeto.pos.alarm_scheduler.AlarmItem
+import com.projeto.pos.alarm_scheduler.AlarmScheduler
 import com.project.pos.data.api.models.Medicine
 import com.project.pos.data.api.repository.MedicineRepository
 import com.project.pos.navigation.Navigator

@@ -39,7 +39,7 @@ android {
 
 dependencies {
     implementation(project(":libraries:navigation"))
-    implementation(project(":features:createmedicine"))
+    implementation(project(":libraries:alarm_scheduler"))
     implementation(project(":libraries:data"))
     implementation(project(":libraries:auth"))
 
