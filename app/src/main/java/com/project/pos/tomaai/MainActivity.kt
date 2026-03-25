@@ -25,11 +25,10 @@ import com.project.pos.navigation.Navigator
 import com.project.pos.onboarding.signin.SingInScreen
 import com.project.pos.onboarding.signup.SignUpScreen
 import com.project.pos.updatemedicine.ui.UpdateMedicineScreen
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
-    private val auth: Auth by lazy {
-        FirebaseAuth()
-    }
+    private val auth: Auth by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
