@@ -1,7 +1,7 @@
 package com.project.pos.data.impl.repository
 
-import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObject
@@ -14,8 +14,8 @@ import kotlinx.coroutines.tasks.await
 
 class FirestoreMedicineRepository(
     private val auth: Auth,
+    private val db: FirebaseFirestore = Firebase.firestore,
 ) : MedicineRepository {
-    private val db by lazy { Firebase.firestore }
 
     override suspend fun addMedicine(medicine: Medicine): String {
         val documentReference = db
