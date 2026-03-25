@@ -51,3 +51,4 @@ fun includeProjects(directory: File, path: String, maxDepth: Int = 1) {
 //include(":features:updatemedicine")
 includeProjects(File(rootDir, "features"), ":features")
 includeProjects(File(rootDir, "libraries"), ":libraries")
+include(":libraries:di")

@@ -3,7 +3,7 @@ package com.project.pos.auth
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
-class FirebaseAuth() : Auth {
+class FirebaseAuth : Auth {
     private val auth by lazy {
         Firebase.auth
     }
