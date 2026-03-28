@@ -35,9 +35,9 @@ class SignInViewModel(
 
     private fun validateEmail(email: String) {
         if (email.isEmpty()) {
-            _state.update { it.copy(emailError = "Email can't be empty") }
+            _state.update { it.copy(emailError = "Email não pode ser vazio") }
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _state.update { it.copy(emailError = "Invalid email format") }
+            _state.update { it.copy(emailError = "Email inválido") }
         } else {
             _state.update { it.copy(emailError = null) }
         }
@@ -45,9 +45,9 @@ class SignInViewModel(
 
     private fun validatePassword(password: String) {
         if (password.isEmpty()) {
-            _state.update { it.copy(passwordError = "Password can't be empty") }
+            _state.update { it.copy(passwordError = "Senha não pode ser vazia") }
         } else if (password.length < 8) {
-            _state.update { it.copy(passwordError = "Password must have at least 8 characters") }
+            _state.update { it.copy(passwordError = "A senha deve conter pelo menos 8 caracteres") }
         } else {
             _state.update { it.copy(passwordError = null) }
         }
